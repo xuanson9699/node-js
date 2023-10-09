@@ -1,5 +1,5 @@
 import mongoose, { Schema, ObjectId } from "mongoose";
-import  isEmail  from "validator";
+import isEmail from "validator";
 
 const User = mongoose.model(
   "User",
@@ -36,6 +36,10 @@ const User = mongoose.model(
         values: ["Male", "Female"],
         message: "{VALUE} is not supported",
       },
+      require: true,
+    },
+    password: {
+      type: String,
       require: true,
     },
   })

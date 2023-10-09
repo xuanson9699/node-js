@@ -5,7 +5,7 @@ import { userController } from "../controllers/index.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  res.send("send users");
+  userController.getAllUser(req, res);
 });
 
 router.post("/register", body("email").isEmail(), body("password").isLength({ min: 5 }), (req, res) => {
@@ -14,6 +14,10 @@ router.post("/register", body("email").isEmail(), body("password").isLength({ mi
 
 router.post("/login", body("email").isEmail(), body("password").isLength({ min: 5 }), (req, res) => {
   userController.login(req, res);
+});
+
+router.get("/profile", (req, res, next) => {
+  userController.profile(req, res, next);
 });
 
 export default router;
