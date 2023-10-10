@@ -4,6 +4,8 @@ const HttpStatusCode = {
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
+  CONTENT_TOO_LARGE: 413,
+  UNPROCESSABLE_CONTENT: 422
 };
 
 export default HttpStatusCode;

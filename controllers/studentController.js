@@ -1,4 +1,3 @@
-import { validationResult } from "express-validator";
 import HttpStatusCode from "../exceptions/HttpStatusCode.js";
 
 const getAllStudents = (req, res) => {

@@ -1,8 +1,8 @@
-import { User } from "../models/index.js";
-import Exception from "../exceptions/Exception.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkToken, getUserByToken } from "../authentication/auth.js";
+import { getUserByToken } from "../authentication/auth.js";
+import Exception from "../exceptions/Exception.js";
+import { User } from "../models/index.js";
 
 const login = async ({ email, password }) => {
   let existingUser = await User.findOne({ email }).exec();

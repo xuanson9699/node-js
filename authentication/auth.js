@@ -4,7 +4,10 @@ import HttpStatusCode from "../exceptions/HttpStatusCode.js";
 const checkToken = (req, res, next) => {
   if (
     req.url.toLowerCase().trim() === "/users/login".toLowerCase().trim() ||
-    req.url.toLowerCase().trim() === "/users/register".toLowerCase().trim()
+    req.url.toLowerCase().trim() === "/users/register".toLowerCase().trim() ||
+    req.url.toLowerCase().trim() === "/view/upload-file".toLowerCase().trim() ||
+    req.url.toLowerCase().trim() === "/upload".toLowerCase().trim() ||
+    req.url.split("/")[1].toLowerCase().trim() === "files".toLowerCase().trim()
   ) {
     next();
     return;
