@@ -19,7 +19,6 @@ router.post(
   fileSizeLimiter,
   (req, res) => {
     const files = req.files;
-    console.log(files);
 
     Object.keys(files).forEach((key) => {
       const filepath = path.join(__dirname, "../files", files[key].name);

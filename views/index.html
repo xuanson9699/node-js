@@ -50,6 +50,8 @@
           formData.append(myFiles.item(key).name, myFiles.item(key));
         });
 
+        console.log(5555, formData)
+
         const response = await fetch("http://localhost:3002/upload", {
           method: "POST",
           body: formData,
