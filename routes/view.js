@@ -12,4 +12,9 @@ router.get("/upload-file", (req, res) => {
   res.sendFile(filePath);
 });
 
+router.get("/chat", (req, res) => {
+  const filePath = path.join(__dirname, "../views/chat/index.html");
+  res.sendFile(filePath);
+});
+
 export default router;

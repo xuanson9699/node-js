@@ -1,95 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Node.js File Uploader</title>
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 1.5rem;
-        background-color: #333;
-        color: whitesmoke;
-      }
+<html>
+<head>
+    <title>Ứng dụng Chat Real-Time</title>
+</head>
+<body>
+    <h1>Chat Real-Time</h1>
+    <div id="chat">
+        <ul id="messages"></ul>
+        <input id="message" autocomplete="off" /><button>Send</button>
+    </div>
 
-      input,
-      button {
-        font: inherit;
-        width: max-content;
-      }
-
-      form {
-        display: flex;
-        flex-flow: column nowrap;
-        gap: 1.5rem;
-      }
-    </style>
-  </head>
-
-  <body>
-    <h1>Node.js File Uploader</h1>
-    <form id="uploadForm">
-      <input type="file" id="myFiles" accept="image/*" multiple />
-      <button>Submit</button>
-    </form>
-    <button id="downloadButton">Tải Xuống Tệp Excel</button>
-    <h2></h2>
-    <h3></h3>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
-      const form = document.getElementById("uploadForm");
+        const socket = io('http://localhost:3002');
 
-      const sendFiles = async () => {
-        // Object
-        const myFiles = document.getElementById("myFiles").files;
-
-        console.log("myFiles", myFiles);
-
-        const formData = new FormData();
-
-        Object.keys(myFiles).forEach((key) => {
-          formData.append(myFiles.item(key).name, myFiles.item(key));
+        // Gửi tin nhắn khi người dùng nhấn Enter hoặc nút Send
+        document.querySelector('button').addEventListener('click', () => {
+            sendMessage();
         });
 
-        console.log(5555, formData);
-
-        const response = await fetch("http://localhost:3002/upload", {
-          method: "POST",
-          body: formData,
+        document.querySelector('#message').addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
         });
 
-        const json = await response.json();
+        function sendMessage() {
+          console.log(111222)
+            const inputMessage = document.querySelector('#message');
+            const message = inputMessage.value;
+            inputMessage.value = '';
 
-        const h2 = document.querySelector("h2");
-        h2.textContent = `Status: ${json?.status}`;
+            // Gửi tin nhắn lên máy chủ
+            socket.emit('chat message', message);
+        }
 
-        const h3 = document.querySelector("h3");
-        h3.textContent = json?.message;
-
-        console.log(json);
-      };
-
-      document.getElementById("downloadButton").addEventListener("click", () => {
-        fetch("http://localhost:3002/export-excel")
-          .then((response) => response.blob())
-          .then((blob) => {
-            console.log(1111, blob);
-            const url = window.URL.createObjectURL(new Blob([blob]));
-            const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", "template.xlsx");
-            document.body.appendChild(link);
-            link.click();
-          })
-          .catch((error) => {
-            console.error("Lỗi khi tải tệp Excel", error);
-          });
-      });
-
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        sendFiles();
-      });
+        // Lắng nghe sự kiện khi có tin nhắn mới từ máy chủ
+        socket.on('chat message', (message) => {
+            const ul = document.querySelector('#messages');
+            const li = document.createElement('li');
+            li.textContent = message;
+            ul.appendChild(li);
+        });
     </script>
-  </body>
+</body>
 </html>
