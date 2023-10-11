@@ -33,6 +33,7 @@
       <input type="file" id="myFiles" accept="image/*" multiple />
       <button>Submit</button>
     </form>
+    <button id="downloadButton">Tải Xuống Tệp Excel</button>
     <h2></h2>
     <h3></h3>
     <script>
@@ -50,7 +51,7 @@
           formData.append(myFiles.item(key).name, myFiles.item(key));
         });
 
-        console.log(5555, formData)
+        console.log(5555, formData);
 
         const response = await fetch("http://localhost:3002/upload", {
           method: "POST",
@@ -67,6 +68,23 @@
 
         console.log(json);
       };
+
+      document.getElementById("downloadButton").addEventListener("click", () => {
+        fetch("http://localhost:3002/export-excel")
+          .then((response) => response.blob())
+          .then((blob) => {
+            console.log(1111, blob);
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "template.xlsx");
+            document.body.appendChild(link);
+            link.click();
+          })
+          .catch((error) => {
+            console.error("Lỗi khi tải tệp Excel", error);
+          });
+      });
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
